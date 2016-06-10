@@ -1,26 +1,33 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.net.URL;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.net.URL;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
+
+/**
+* HTML page viewer
+* @author Cristian Henrique (cristianmsbr@gmail.com)
+*/
 
 public class HTMLViewer extends JFrame {
 	private RSyntaxTextArea textArea;
 	private RTextScrollPane scrollBar;
 	private JMenuBar menuBar;
 	private JMenu file, help;
-	private JMenuItem open, about;
+	private JMenuItem open, save, about;
+	private JFileChooser jfc;
 
 	private void buildGUI() {
 		this.setTitle("HTML Viewer");
@@ -42,14 +49,18 @@ public class HTMLViewer extends JFrame {
 
 		open = new JMenuItem("Open");
 		about = new JMenuItem("About");
+		save = new JMenuItem("Save");
 
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 
 		open.addActionListener(new OpenListener());
 		about.addActionListener(new AboutListener());
+		save.addActionListener(new SaveListener());
 
 		file.add(open);
+		file.add(save);
 		help.add(about);
 		menuBar.add(file);
 		menuBar.add(help);
@@ -97,6 +108,20 @@ public class HTMLViewer extends JFrame {
 	class AboutListener implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 			JOptionPane.showMessageDialog(null, "Developed by Cristian Henrique\ncristianmsbr@gmail.com");
+		}
+	}
+
+	class SaveListener implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+			jfc = new JFileChooser();
+
+			if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+				try {
+					FileWriter fw = new FileWriter(jfc.getSelectedFile());
+					fw.write(textArea.getText());
+					fw.close();
+				} catch (Exception ex) { ex.printStackTrace(); }
+			}
 		}
 	}
 
