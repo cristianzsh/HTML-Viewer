@@ -26,7 +26,7 @@ public class HTMLViewer extends JFrame {
 	private RTextScrollPane scrollBar;
 	private JMenuBar menuBar;
 	private JMenu file, help;
-	private JMenuItem open, save, about;
+	private JMenuItem open, save, exit, about;
 	private JFileChooser jfc;
 
 	private void buildGUI() {
@@ -50,17 +50,21 @@ public class HTMLViewer extends JFrame {
 		open = new JMenuItem("Open");
 		about = new JMenuItem("About");
 		save = new JMenuItem("Save");
+		exit = new JMenuItem("Exit");
 
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, ActionEvent.ALT_MASK));
 		about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 
 		open.addActionListener(new OpenListener());
 		about.addActionListener(new AboutListener());
 		save.addActionListener(new SaveListener());
+		exit.addActionListener(new ExitListener());
 
 		file.add(open);
 		file.add(save);
+		file.add(exit);
 		help.add(about);
 		menuBar.add(file);
 		menuBar.add(help);
@@ -122,6 +126,12 @@ public class HTMLViewer extends JFrame {
 					fw.close();
 				} catch (Exception ex) { ex.printStackTrace(); }
 			}
+		}
+	}
+
+	class ExitListener implements ActionListener {
+		public void actionPerformed(ActionEvent ev) {
+			System.exit(0);
 		}
 	}
 
