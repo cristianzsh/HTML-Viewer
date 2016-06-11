@@ -11,6 +11,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.KeyStroke;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -31,6 +32,10 @@ public class HTMLViewer extends JFrame {
 
 	private void buildGUI() {
 		this.setTitle("HTML Viewer");
+
+		try {
+			UIManager.setLookAndFeel("com.alee.laf.WebLookAndFeel");
+		} catch (Exception ex) { ex.printStackTrace(); }
 
 		addTextArea();
 		addMenus();
