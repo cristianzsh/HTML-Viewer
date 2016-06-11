@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -44,6 +45,7 @@ public class HTMLViewer extends JFrame {
 		this.setSize(900, 600);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
 		this.setVisible(true);
 	}
 
