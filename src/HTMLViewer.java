@@ -30,6 +30,7 @@ public class HTMLViewer extends JFrame {
 	private JMenu file, help;
 	private JMenuItem open, save, exit, about;
 	private JFileChooser jfc;
+	private String url;
 
 	private void buildGUI() {
 		this.setTitle("HTML Viewer");
@@ -105,12 +106,13 @@ public class HTMLViewer extends JFrame {
 			}
 			br.close();
 			textArea.discardAllEdits();
+			this.setTitle(url + " - HTML Viewer");
 		} catch (Exception ex) { ex.printStackTrace(); }
 	}
 
 	class OpenListener implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
-			String url = JOptionPane.showInputDialog(null, "URL (E.g. https://www.google.com/)");
+			url = JOptionPane.showInputDialog(null, "URL (E.g. https://www.google.com/)");
 
 			openSite(url);
 		}
