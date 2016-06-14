@@ -17,6 +17,7 @@ import javax.swing.KeyStroke;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.ui.rsyntaxtextarea.Theme;
 
 /**
 * HTML page viewer
@@ -27,8 +28,8 @@ public class HTMLViewer extends JFrame {
 	private RSyntaxTextArea textArea;
 	private RTextScrollPane scrollBar;
 	private JMenuBar menuBar;
-	private JMenu file, help;
-	private JMenuItem open, save, exit, about;
+	private JMenu file, themes, help;
+	private JMenuItem open, save, exit, about, defaultt, dark;
 	private JFileChooser jfc;
 	private String url;
 
@@ -53,12 +54,15 @@ public class HTMLViewer extends JFrame {
 	private void addMenus() {
 		menuBar = new JMenuBar();
 		file = new JMenu("File");
+		themes = new JMenu("Themes");
 		help = new JMenu("Help");
 
 		open = new JMenuItem("Open");
 		about = new JMenuItem("About");
 		save = new JMenuItem("Save");
 		exit = new JMenuItem("Exit");
+		defaultt = new JMenuItem("Default");
+		dark = new JMenuItem("Dark");
 
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
@@ -70,11 +74,20 @@ public class HTMLViewer extends JFrame {
 		save.addActionListener(new SaveListener());
 		exit.addActionListener(new ExitListener());
 
+		dark.addActionListener(new ThemeListener("dark"));
+		defaultt.addActionListener(new ThemeListener("default"));
+
 		file.add(open);
 		file.add(save);
 		file.add(exit);
+
+		themes.add(dark);
+		themes.add(defaultt);
+
 		help.add(about);
+
 		menuBar.add(file);
+		menuBar.add(themes);
 		menuBar.add(help);
 		this.setJMenuBar(menuBar);
 	}
@@ -135,6 +148,21 @@ public class HTMLViewer extends JFrame {
 					fw.close();
 				} catch (Exception ex) { ex.printStackTrace(); }
 			}
+		}
+	}
+
+	class ThemeListener implements ActionListener {
+		private String name;
+
+		public ThemeListener(String t) {
+			this.name = t;
+		}
+
+		public void actionPerformed(ActionEvent ev) {
+			try {
+				Theme theme = Theme.load(getClass().getResourceAsStream("themes/" + name + ".xml"));
+				theme.apply(textArea);
+			} catch (Exception ex) { ex.printStackTrace(); }
 		}
 	}
 
